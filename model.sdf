@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<sdf version="1.10">
+  <model name="market_al_danube">
+    <static>true</static>
+    <link name="link">
+
+      
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://market_al_danube/meshes/market_al_danube.glb</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+
+
+
+    </link>
+  </model>
+</sdf>
