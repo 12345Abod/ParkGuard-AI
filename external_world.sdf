@@ -1,0 +1,149 @@
+<?xml version="1.0" ?>
+<!--
+  ============================================================
+  external_world.sdf — Session 04
+  ============================================================
+  A PX4-compatible world for testing imported external mesh models.
+
+  IMPORTANT: Like all PX4 worlds, this file has NO explicit
+  <plugin> tags. Plugins are loaded from server.config via
+  GZ_SIM_SERVER_CONFIG_PATH.
+
+  One-time setup — copy to PX4 worlds directory:
+    cp ~/Videos/Session_4/worlds/external_world.sdf \
+       ~/PX4-Autopilot/Tools/simulation/gz/worlds/external_world.sdf
+
+  Run with:
+    Terminal 1:
+      export GZ_SIM_RESOURCE_PATH=~/PX4-Autopilot/Tools/simulation/gz/models
+      export GZ_SIM_SERVER_CONFIG_PATH=~/.simulation-gazebo/server.config
+      export GZ_SIM_SYSTEM_PLUGIN_PATH=~/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_plugins
+      export GZ_MESH_FORCE_ASSIMP=1
+      gz sim -r ~/PX4-Autopilot/Tools/simulation/gz/worlds/external_world.sdf
+
+    Terminal 2 (after Gazebo is running):
+      cd ~/PX4-Autopilot
+      PX4_GZ_STANDALONE=1 PX4_GZ_WORLD=external_world make px4_sitl gz_x500
+  ============================================================
+-->
+<sdf version="1.9">
+  <world name="external_world">
+
+    <!-- Physics — required rate for PX4 sensor integration -->
+    <physics type="ode">
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+    </physics>
+
+    <!-- Required by PX4 sensor plugins via server.config -->
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type="adiabatic"/>
+
+    <!-- GPS home position — required for NavSat/GPS sensor -->
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>47.397971057728974</latitude_deg>
+      <longitude_deg>8.546163739800146</longitude_deg>
+      <elevation>0</elevation>
+    </spherical_coordinates>
+
+    <!-- Sun -->
+    <light name="sunUTC" type="directional">
+      <pose>0 0 500 0 0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>1</intensity>
+      <direction>0.001 0.625 -0.78</direction>
+      <diffuse>0.904 0.904 0.904 1</diffuse>
+      <specular>0.271 0.271 0.271 1</specular>
+      <attenuation>
+        <range>2000</range>
+        <linear>0</linear>
+        <constant>1</constant>
+        <quadratic>0</quadratic>
+      </attenuation>
+    </light>
+
+    <!-- Ground plane -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>1 1</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction><ode/></friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>500 500</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+
+   <include>
+      <uri>model://market_al_danube</uri>
+      <name>railway_station</name>
+      <pose>0.55 1.13 0.06 1.57 0 1.59</pose>
+    </include>
+    
+       <include>
+      <uri>model://helipad_1</uri>
+      <name>helipad_1</name>
+      <pose>9.62 33.89 0.08 0 0 0</pose>
+    </include>
+    
+        <include>
+      <uri>model://2024_hyundai_elantra_n</uri>
+      <name>2024_hyundai_elantra_n</name>
+      <pose>-8.21 25.71 0.0 1.57 0.01 1.57</pose>
+    </include>
+      <include>
+      <uri>model://2019_chevrolet_malibu_ls_sedan</uri>
+      <name>2019_chevrolet_malibu_ls_sedan</name>
+      <pose>13.80 20.53 0.0 0.00 0.01 1.51-</pose>
+    </include>
+
+    <!-- ======================================================
+         YOUR IMPORTED MODEL GOES HERE
+         ======================================================
+         Replace 'YourModelName' with the folder name you created
+         in the walkthrough. The folder must be in GZ_SIM_RESOURCE_PATH.
+
+         <include>
+           <uri>model://YourModelName</uri>
+           <name>imported_model_1</name>
+           <pose>15 0 0 0 0 0</pose>
+         </include>
+  <include>
+      <uri>model://forest_clearing_1_ground_skybox</uri>
+      <name>forest_clearing_1_ground_skybox</name>
+      <pose>3 0 10 0 0 0</pose>
+    </include>
+    
+         TIP: Place models at X=10 to X=30 so the drone (spawns at 0,0)
+         can see them immediately. Keep Z=0 — the model.sdf handles
+         vertical positioning via its own geometry and scale.
+    ====================================================== -->
+
+  </world>
+</sdf>
